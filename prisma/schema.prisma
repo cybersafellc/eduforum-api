@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id                    String   @id @default(uuid()) @db.VarChar(255)
+  username              String   @unique @db.VarChar(255)
+  password              String   @db.VarChar(255)
+  full_name             String?  @db.VarChar(255)
+  profile_url           String?  @db.Text
+  nidn_or_nim           String?  @unique @db.VarChar(255)
+  nama_perguruan_tinggi String?  @db.VarChar(255)
+  role                  String?  @db.VarChar(255)
+  create_at             DateTime @default(now()) @db.DateTime
+  update_at             DateTime @updatedAt @db.DateTime
+  posts                 posts[]
+  posts_like            posts_like[]
+  answers               answers[]
+  vote_up               vote_up[]
+  vote_down             vote_down[]
+}
+
+model posts {
+  id            String       @id @default(uuid()) @db.VarChar(255)
+  img_url       String?      @db.Text
+  content       String?      @db.Text
+  users_id      String       @db.VarChar(255)
+  count_answers Int?
+  count_like    Int?
+  create_at     DateTime     @default(now()) @db.DateTime
+  update_at     DateTime     @updatedAt @db.DateTime
+  user          users        @relation(fields: [users_id], references: [id])
+  posts_like    posts_like[]
+  answers       answers[]
+}
+
+model posts_like {
+  id         String   @id @default(uuid()) @db.VarChar(255)
+  posts_id   String   @db.VarChar(255)
+  users_id   String   @db.VarChar(255)
+  create_at  DateTime @default(now()) @db.DateTime
+  update_at  DateTime @updatedAt @db.DateTime
+  post       posts    @relation(fields: [posts_id], references: [id])
+  user       users    @relation(fields: [users_id], references: [id])
+}
+
+model answers {
+  id         String       @id @default(uuid()) @db.VarChar(255)
+  posts_id   String       @db.VarChar(255)
+  users_id   String       @db.VarChar(255)
+  answers    String?      @db.Text
+  vote_up    Int?
+  vote_down  Int?
+  create_at  DateTime     @default(now()) @db.DateTime
+  update_at  DateTime     @updatedAt @db.DateTime
+  post       posts        @relation(fields: [posts_id], references: [id])
+  user       users        @relation(fields: [users_id], references: [id])
+  vote_up_relations   vote_up[]
+  vote_down_relations vote_down[]
+}
+
+model vote_up {
+  id         String   @id @default(uuid()) @db.VarChar(255)
+  answers_id String   @db.VarChar(255)
+  users_id   String   @db.VarChar(255)
+  create_at  DateTime @default(now()) @db.DateTime
+  update_at  DateTime @updatedAt @db.DateTime
+  answer     answers  @relation(fields: [answers_id], references: [id])
+  user       users    @relation(fields: [users_id], references: [id])
+}
+
+model vote_down {
+  id         String   @id @default(uuid()) @db.VarChar(255)
+  answers_id String   @db.VarChar(255)
+  users_id   String   @db.VarChar(255)
+  create_at  DateTime @default(now()) @db.DateTime
+  update_at  DateTime @updatedAt @db.DateTime
+  answer     answers  @relation(fields: [answers_id], references: [id])
+  user       users    @relation(fields: [users_id], references: [id])
+}

@@ -1,0 +1,20 @@
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import errorMiddleware from "../middlewares/error-middleware.js";
+import { limiter } from "./rateLimit.js";
+import privateRouter from "../routers/private.js";
+import publicRouter from "../routers/public.js";
+
+const web = express();
+web.set("trust proxy", 1);
+web.use(limiter);
+web.use(cors());
+web.use(cookieParser());
+web.use(bodyParser.json());
+web.use(publicRouter);
+web.use(privateRouter);
+web.use(errorMiddleware.notFound);
+web.use(errorMiddleware.errorHandler);
+export { web };
