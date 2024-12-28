@@ -39,4 +39,30 @@ async function likePost(req, res, next) {
 	}
 }
 
-export default { create, get, likePost };
+async function answers(req, res, next) {
+	try {
+		const response = await postsService.answers(req.body);
+		res.status(response.status).json(response).end();
+	} catch (error) {
+		next(error);
+	}
+}
+
+async function voteUp(req, res, next) {
+	try {
+		const response = await postsService.voteUp(req.body);
+		res.status(response.status).json(response).end();
+	} catch (error) {
+		next(error);
+	}
+}
+async function voteDown(req, res, next) {
+	try {
+		const response = await postsService.voteDown(req.body);
+		res.status(response.status).json(response).end();
+	} catch (error) {
+		next(error);
+	}
+}
+
+export default { create, get, likePost, answers, voteUp, voteDown };

@@ -21,9 +21,24 @@ const likePost = Joi.object({
 	post_id: Joi.string().required(),
 });
 
+const answers = Joi.object({
+	id: Joi.string().required(),
+	role: Joi.string().required(),
+	post_id: Joi.string().required(),
+	answers: Joi.string().required(),
+});
+
+const vote = Joi.object({
+	answers_id: Joi.string().required(),
+	id: Joi.string().required(),
+	role: Joi.string().required(),
+});
+
 export default {
 	create,
 	get,
 	getById,
 	likePost,
+	answers,
+	vote,
 };

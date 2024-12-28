@@ -35,4 +35,19 @@ router.post(
 	authMiddleware.authorization,
 	postsController.likePost
 );
+router.post(
+	"/posts/answers",
+	authMiddleware.authorization,
+	postsController.answers
+);
+router.post(
+	"/answers/voteup",
+	authMiddleware.authorization,
+	postsController.voteUp
+);
+router.post(
+	"/answers/votedown",
+	authMiddleware.authorization,
+	postsController.voteDown
+);
 export default router;

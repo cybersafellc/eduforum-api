@@ -59,7 +59,7 @@ async function get(request) {
 							update_at: true,
 						},
 					},
-					vote_down_relations: {
+					vote_up_relations: {
 						include: {
 							user: {
 								select: {
@@ -159,7 +159,7 @@ async function getById(request) {
 							update_at: true,
 						},
 					},
-					vote_down_relations: {
+					vote_up_relations: {
 						include: {
 							user: {
 								select: {
@@ -224,12 +224,12 @@ async function getById(request) {
 
 async function likePost(request) {
 	const result = await validation(postsValidation.likePost, request);
-	const countPost = await database.posts.count({
+	const post = await database.posts.findUnique({
 		where: {
 			id: result.post_id,
 		},
 	});
-	if (!countPost)
+	if (!post)
 		throw new ResponseError(
 			400,
 			"tidak ada postingan dengan id yang anda berikan!"
@@ -246,7 +246,7 @@ async function likePost(request) {
 		id: crypto.randomUUID(),
 		post: {
 			connect: {
-				id: result.post_id,
+				id: post.id,
 			},
 		},
 		user: {
@@ -260,10 +260,10 @@ async function likePost(request) {
 	});
 	await database.posts.update({
 		where: {
-			id: result.post_id,
+			id: post.id,
 		},
 		data: {
-			count_like: +1,
+			count_like: post.count_like + 1,
 		},
 	});
 	return new Response(
@@ -275,4 +275,168 @@ async function likePost(request) {
 	);
 }
 
-export default { create, get, getById, likePost };
+async function answers(request) {
+	const result = await validation(postsValidation.answers, request);
+	const post = await database.posts.findUnique({
+		where: {
+			id: result.post_id,
+		},
+	});
+	if (!post)
+		throw new ResponseError(
+			400,
+			"tidak ada postingan dengan id yang anda berikan"
+		);
+	const data = {
+		id: crypto.randomUUID(),
+		posts_id: post.id,
+		users_id: result.id,
+		answers: result.answers,
+		vote_up: 0,
+		vote_down: 0,
+	};
+	const createRes = await database.answers.create({
+		data: data,
+	});
+	await database.posts.update({
+		data: {
+			count_answers: post.count_answers + 1,
+		},
+		where: {
+			id: post.id,
+		},
+	});
+	return new Response(
+		200,
+		"berhasil melakukan answers!",
+		createRes,
+		null,
+		false
+	);
+}
+
+async function voteUp(request) {
+	const result = await validation(postsValidation.vote, request);
+	const answer = await database.answers.findUnique({
+		where: {
+			id: result.answers_id,
+		},
+	});
+	if (!answer)
+		throw new ResponseError(
+			400,
+			"tidak ada answers dengan di yang anda berikan!"
+		);
+	const countVoteUp = await database.vote_up.count({
+		where: {
+			answers_id: result.answers_id,
+			users_id: result.id,
+		},
+	});
+	const countVoteDown = await database.vote_down.count({
+		where: {
+			answers_id: result.answers_id,
+			users_id: result.id,
+		},
+	});
+	if (countVoteUp) {
+		throw new ResponseError(
+			201,
+			"anda sudah melakukan vote up di answers ini!"
+		);
+	}
+	if (countVoteDown) {
+		throw new ResponseError(
+			201,
+			"anda sudah melakukan vote down di answers ini!"
+		);
+	}
+	const data = {
+		id: crypto.randomUUID(),
+		answers_id: answer.id,
+		users_id: result.id,
+	};
+	const answerRes = await database.vote_up.create({
+		data: data,
+	});
+	await database.answers.update({
+		data: {
+			vote_up: answer.vote_up + 1,
+		},
+		where: {
+			id: answer.id,
+		},
+	});
+
+	return new Response(
+		200,
+		"berhasil melakukan vote up!",
+		answerRes,
+		null,
+		false
+	);
+}
+
+async function voteDown(request) {
+	const result = await validation(postsValidation.vote, request);
+	const answer = await database.answers.findUnique({
+		where: {
+			id: result.answers_id,
+		},
+	});
+	if (!answer)
+		throw new ResponseError(
+			400,
+			"tidak ada answers dengan di yang anda berikan!"
+		);
+	const countVoteUp = await database.vote_up.count({
+		where: {
+			answers_id: result.answers_id,
+			users_id: result.id,
+		},
+	});
+	const countVoteDown = await database.vote_down.count({
+		where: {
+			answers_id: result.answers_id,
+			users_id: result.id,
+		},
+	});
+	if (countVoteUp) {
+		throw new ResponseError(
+			201,
+			"anda sudah melakukan vote up di answers ini!"
+		);
+	}
+	if (countVoteDown) {
+		throw new ResponseError(
+			201,
+			"anda sudah melakukan vote down di answers ini!"
+		);
+	}
+	const data = {
+		id: crypto.randomUUID(),
+		answers_id: answer.id,
+		users_id: result.id,
+	};
+	const answerRes = await database.vote_down.create({
+		data: data,
+	});
+	await database.answers.update({
+		data: {
+			vote_down: answer.vote_down + 1,
+		},
+		where: {
+			id: answer.id,
+		},
+	});
+
+	return new Response(
+		200,
+		"berhasil melakukan vote down!",
+		answerRes,
+		null,
+		false
+	);
+}
+
+export default { create, get, getById, likePost, answers, voteUp, voteDown };
