@@ -6,7 +6,8 @@
 	"type": "module",
 	"scripts": {
 		"test": "jest",
-		"build": "npm install && prisa generate",
+		"prisma": "npm install --save-dev prisma",
+		"build": "npm install && primsa generate",
 		"dev": "nodemon .",
 		"start": "node ."
 	},

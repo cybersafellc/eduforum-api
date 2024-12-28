@@ -1,5 +1,7 @@
+node_modules
 .env
 tmp
 test
 public
 .vscode
+.gitignore
