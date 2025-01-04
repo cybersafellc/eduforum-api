@@ -9,21 +9,48 @@ import bcrypt from "bcrypt";
 import Jwt from "jsonwebtoken";
 
 async function oAuthGoogle(request) {
-	const result = await validation(usersValidation.oAuthGoogle, request);
-	const CLIENT_ID = process.env.CLIENT_ID;
-	let ticket;
-	try {
-		ticket = await oAuth2Client.verifyIdToken({
-			idToken: result.idToken,
-			audience: CLIENT_ID,
-		});
-	} catch (error) {
-		throw new ResponseError(400, "invalid idToken!");
+	function decodeJWT(token) {
+		const payload = token.split(".")[1]; // Ambil bagian payload
+		const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/")); // Decode base64url
+		return JSON.parse(decoded); // Parse ke JSON
 	}
-	const payload = ticket.getPayload();
-	console.log(payload); // debuging
-	// logika daftar / login dan mereturn access_token
-	return new Response(200, "testing lihat data user", payload, null, false);
+
+	const result = await validation(usersValidation.oAuthGoogle, request);
+	const payload = await decodeJWT(result.idToken);
+
+	const user = await database.users.findFirst({
+		where: {
+			username: payload.email,
+		},
+	});
+	if (user) {
+		const pyld = {
+			id: user.id,
+			role: user.role,
+		};
+		const access_token = Jwt.sign(pyld, process.env.JWT_SECRET, {
+			expiresIn: "1d",
+		});
+		return new Response(200, "login berhasil!", { access_token }, null, false);
+	} else {
+		const userCreate = await database.users.create({
+			data: {
+				id: crypto.randomUUID(),
+				username: payload.email,
+				password: process.env.PWLWG,
+				full_name: payload.name,
+				role: "mahasiswa",
+			},
+		});
+		const pyld = {
+			id: userCreate.id,
+			role: userCreate.role,
+		};
+		const access_token = Jwt.sign(pyld, process.env.JWT_SECRET, {
+			expiresIn: "1d",
+		});
+		return new Response(200, "daftar berhasil!", { access_token }, null, false);
+	}
 }
 
 async function create(request) {
