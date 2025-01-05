@@ -513,3 +513,203 @@ Response Body Success (query id)
 	"error": false
 }
 ```
+
+## Like Postingan
+
+Enpdoint : POST /posts/like
+
+Headers :
+
+- Authorization : Bearer {:access token}
+
+Request Body
+
+```json
+{
+	"post_id": "8d2776ee-69db-4ae2-88f0-7ebf443553e6"
+}
+```
+
+Response Body Success :
+
+```json
+{
+	"status": 200,
+	"message": "berhasil like postingan ini!",
+	"data": {
+		"id": "0170afbb-14bf-4bba-9efd-9d33b3d0af3f",
+		"posts_id": "8d2776ee-69db-4ae2-88f0-7ebf443553e6",
+		"users_id": "712697fb-392d-477d-9ba0-91bbc9b553e6",
+		"create_at": "2025-01-05T11:53:43.000Z",
+		"update_at": "2025-01-05T11:53:43.000Z"
+	},
+	"refrence": null,
+	"error": false
+}
+```
+
+Response Body Success (Jika Sudah Like) :
+
+```json
+{
+	"status": 201,
+	"message": "kamu sudah like postingan ini!",
+	"data": null,
+	"refrence": null,
+	"error": true
+}
+```
+
+Response Body Error :
+
+```json
+{
+	"status": 400,
+	"message": "tidak ada postingan dengan id yang anda berikan!",
+	"data": null,
+	"refrence": null,
+	"error": true
+}
+```
+
+# Answers / Comment
+
+Endpoint : POST /posts/answers
+
+Headers :
+
+- Authorization : Bearer {:access token}
+
+Request Body :
+
+```json
+{
+	"post_id": "8d2776ee-69db-4ae2-88f0-7ebf443553e6",
+	"answers": "Wow Reverse engginering, i like it"
+}
+```
+
+Response Body Success :
+
+```json
+{
+	"status": 200,
+	"message": "berhasil melakukan answers!",
+	"data": {
+		"id": "1af37360-11b5-4f0a-87a7-72a717601325",
+		"posts_id": "8d2776ee-69db-4ae2-88f0-7ebf443553e6",
+		"users_id": "712697fb-392d-477d-9ba0-91bbc9b553e6",
+		"answers": "Wow Reverse engginering, i like it",
+		"vote_up": 0,
+		"vote_down": 0,
+		"create_at": "2025-01-05T11:58:02.000Z",
+		"update_at": "2025-01-05T11:58:02.000Z"
+	},
+	"refrence": null,
+	"error": false
+}
+```
+
+Response Body Error :
+
+```json
+{
+	"status": 400,
+	"message": "tidak ada postingan dengan id yang anda berikan",
+	"data": null,
+	"refrence": null,
+	"error": true
+}
+```
+
+# Vote Up Answers / Comment
+
+Endpoint : POST /answers/voteup
+
+Headers :
+
+- Authorization : Bearer {:access token}
+
+Request Body :
+
+```json
+{
+	"answers_id": "1af37360-11b5-4f0a-87a7-72a717601325"
+}
+```
+
+Response Body Success :
+
+```json
+{
+	"status": 200,
+	"message": "berhasil melakukan vote up!",
+	"data": {
+		"id": "696e9d4b-1b1c-4126-bb26-f1a765843a79",
+		"answers_id": "1af37360-11b5-4f0a-87a7-72a717601325",
+		"users_id": "712697fb-392d-477d-9ba0-91bbc9b553e6",
+		"create_at": "2025-01-05T12:10:31.000Z",
+		"update_at": "2025-01-05T12:10:31.000Z"
+	},
+	"refrence": null,
+	"error": false
+}
+```
+
+Response Body Error :
+
+```json
+{
+	"status": 400,
+	"message": "tidak ada answers dengan di yang anda berikan!",
+	"data": null,
+	"refrence": null,
+	"error": true
+}
+```
+
+# Vote Down Answers / Comment
+
+Endpoint : POST /answers/votedown
+
+Headers :
+
+- Authorization : Bearer {:access token}
+
+Request Body :
+
+```json
+{
+	"answers_id": "1af37360-11b5-4f0a-87a7-72a717601325"
+}
+```
+
+Response Body Success :
+
+```json
+{
+	"status": 200,
+	"message": "berhasil melakukan vote down!",
+	"data": {
+		"id": "696e9d4b-1b1c-4126-bb26-f1a765843a79",
+		"answers_id": "1af37360-11b5-4f0a-87a7-72a717601325",
+		"users_id": "712697fb-392d-477d-9ba0-91bbc9b553e6",
+		"create_at": "2025-01-05T12:10:31.000Z",
+		"update_at": "2025-01-05T12:10:31.000Z"
+	},
+	"refrence": null,
+	"error": false
+}
+```
+
+Response Body Error :
+
+```json
+{
+	"status": 400,
+	"message": "tidak ada answers dengan di yang anda berikan!",
+	"data": null,
+	"refrence": null,
+	"error": true
+}
+```
