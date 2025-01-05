@@ -222,7 +222,7 @@ Response Body Error :
 
 ## Update Profile
 
-Endpoint : POST /users/profile
+Endpoint : PUT /users/profile
 
 Request Headers :
 

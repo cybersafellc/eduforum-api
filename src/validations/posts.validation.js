@@ -3,12 +3,14 @@ import Joi from "joi";
 const create = Joi.object({
 	img_url: Joi.string().optional(),
 	content: Joi.string().required(),
+	title: Joi.string().required(),
 	users_id: Joi.string().required(),
 });
 
 const get = Joi.object({
 	page: Joi.number().required(),
 	take: Joi.number().required(),
+	query: Joi.string().optional(),
 });
 
 const getById = Joi.object({

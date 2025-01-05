@@ -15,6 +15,7 @@ CREATE TABLE users (
 CREATE TABLE posts (
     id VARCHAR(255) PRIMARY KEY,
     img_url TEXT,
+    title TEXT,
     content TEXT,
     users_id VARCHAR(255),
     count_answers INT,
