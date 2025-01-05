@@ -336,6 +336,7 @@ Request Headers :
 | -------------- | ---------------- | -------------------- | ---------------------- |
 | file           | array of strings | gambar               | ["png", "jpg", "jpeg"] |
 | content        | string           | Deskripsi Pertanyaan | ini kenapa ya          |
+| title          | string           | judul pertanyaan     | db di hack raidit      |
 
 Response Body Success :
 
@@ -346,6 +347,7 @@ Response Body Success :
 	"data": {
 		"id": "d8b06204-1e7b-44af-af5a-2d40c6a6ec3e",
 		"img_url": "https://eduforumapi.htp22tib.com/foto/04f9565c-9177-4eee-aa64-9f40c9fd35a0.jpg",
+		"title": "db di hack raidit",
 		"content": "saya ingin bertanya",
 		"users_id": "2a1bdc46-b5cb-478a-8dd6-a7d7757b2118",
 		"count_answers": 0,
@@ -376,11 +378,12 @@ Endpoint : GET /posts
 
 ### Query Parameters
 
-| query | value        | fungsi                                                    |
-| ----- | ------------ | --------------------------------------------------------- |
-| take  | 10 - infinit | untuk menentukan berapa jumlah penyajian , Default 10     |
-| page  | 1 - max_page | untuk melakukan pagination, default 1                     |
-| id    | post_id      | untuk mendapatkan 1 data saja berdasarkan id yang dikirim |
+| query     | value              | fungsi                                                    |
+| --------- | ------------------ | --------------------------------------------------------- |
+| take      | 10 - infinit       | untuk menentukan berapa jumlah penyajian , Default 10     |
+| page      | 1 - max_page       | untuk melakukan pagination, default 1                     |
+| id        | post_id            | untuk mendapatkan 1 data saja berdasarkan id yang dikirim |
+| q / query | node js fixing bug | get postingan berdasarkan query yang dicari               |
 
 Response Body Success (get all):
 
@@ -393,6 +396,7 @@ Response Body Success (get all):
 			{
 				"id": "eb5363f0-baad-431e-8e46-06f98708be81",
 				"img_url": "https://eduforumapi.htp22tib.com/foto/df2090b0-8366-461c-9da9-427e88611156.jpeg",
+				"title": "db di hack raidit",
 				"content": "aku pusing ini error mulu dari 5 tahun lalu, heheheheh, mohon pencerahannya suhu!",
 				"users_id": "4979fc49-c74d-402e-a6e1-d63831a89239",
 				"count_answers": 1,
@@ -496,6 +500,7 @@ Response Body Success (get all):
 			{
 				"id": "c557fdca-a674-4a9c-91b6-27e60f10c6bd",
 				"img_url": "https://eduforumapi.htp22tib.com/foto/17ee1637-919d-4f69-9ab5-c9fd953afde6.jpeg",
+				"title": "db di hack raidit",
 				"content": "aku pusing ini error mulu dari 5 tahun lalu, heheheheh, mohon pencerahannya suhu!",
 				"users_id": "4979fc49-c74d-402e-a6e1-d63831a89239",
 				"count_answers": 0,
@@ -537,6 +542,7 @@ Response Body Success (query id)
 	"data": {
 		"id": "d8b06204-1e7b-44af-af5a-2d40c6a6ec3e",
 		"img_url": "https://eduforumapi.htp22tib.com/foto/04f9565c-9177-4eee-aa64-9f40c9fd35a0.jpg",
+		"title": "db di hack raidit",
 		"content": "saya ingin bertanya",
 		"users_id": "2a1bdc46-b5cb-478a-8dd6-a7d7757b2118",
 		"count_answers": 0,
