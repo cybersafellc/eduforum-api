@@ -116,6 +116,11 @@ async function get(request) {
 
 		skip: result.skip,
 		take: result.take,
+		where: {
+			title: {
+				contains: result.query,
+			},
+		},
 	});
 	data.pagination_info = {
 		max_page: Math.ceil(count / result.take),
