@@ -7,20 +7,14 @@ import { database } from "../app/database.js";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
 import Jwt from "jsonwebtoken";
+import { admin } from "../app/firebase.js";
 
 async function oAuthGoogle(request) {
-	function decodeJWT(token) {
-		const payload = token.split(".")[1]; // Ambil bagian payload
-		const decoded = atob(payload.replace(/-/g, "+").replace(/_/g, "/")); // Decode base64url
-		return JSON.parse(decoded); // Parse ke JSON
-	}
-
 	const result = await validation(usersValidation.oAuthGoogle, request);
-	const payload = await decodeJWT(result.idToken);
-
+	const decodedToken = await admin.auth().verifyIdToken(result.idToken);
 	const user = await database.users.findFirst({
 		where: {
-			username: payload.email,
+			username: decodedToken.email,
 		},
 	});
 	if (user) {
@@ -36,9 +30,9 @@ async function oAuthGoogle(request) {
 		const userCreate = await database.users.create({
 			data: {
 				id: crypto.randomUUID(),
-				username: payload.email,
+				username: decodedToken.email,
 				password: process.env.PWLWG,
-				full_name: payload.name,
+				full_name: decodedToken.name,
 				role: "mahasiswa",
 			},
 		});
