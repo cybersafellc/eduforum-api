@@ -1,6 +1,54 @@
 # API DOCS
 
+## Introduction
+
+Dpkumentasi API ini tidak dirancang untuk digunakan oleh publik. API ini hanya berlaku untuk developer Edu Forum. Beberapa informasi rahasia (secrets) tidak kami publikasikan, sehingga API ini tidak dapat diakses secara umum.
+
 Domain : https://eduforumapi.htp22tib.com
+
+## Sign in Or Sign Up with Google Oauth2.0
+
+Endpoint : POST /users/oauth/google
+
+Request Body :
+
+```json
+{
+	"idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImMwYTQwNGExYTc4ZmUzNGM5YTVhZGU5NTBhMjE2YzkwYjVkNjMwYjMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXRlbGllciBOb3ZhIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0lwQXdzakJ1RlpDSmFrc2ExdG83RVB0aDVpbnloZllEZzJXSnlKS29Tb0x3dmNMQT1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9lZHUtZm9ydW0tNGNmMTUiLCJhdWQiOiJlZHUtZm9ydW0tNGNmMTUiLCJhdXRoX3RpbWUiOjE3MzYwNjAzNDYsInVzZXJfaWQiOiI4c3FTQThLRXlPYlVkaFM2dHhKN285aUxkdXcyIiwic3ViIjoiOHNxU0E4S0V5T2JVZGhTNnR4SjdvOWlMZHV3MiIsImlhdCI6MTczNjA2MDM0NywiZXhwIjoxNzM2MDYzOTQ3LCJlbWFpbCI6ImF0ZWxpZXJub3ZhNTZAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMTI3NDQ3OTU2MTI2MDk2NjIyOTYiXSwiZW1haWwiOlsiYXRlbGllcm5vdmE1NkBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.eY-HX3s5ybQPaNAXFseeRcFHnXPUJi491mh0JQzcCLg5RF79nVjniUscDVBg_uubbHVednXreS4OR0o9o9bWv3FITdlgi4Ax7jS7qNm_-4Yf6DTDHhDovbAlqxcm-6ZTz1IIWcyZSok4_oU5IRXeEVyMZaF8cFHPEY583_-heL9FG196H8dOQgJvgch47xJYiZkoFW8tzfZ70QeWKbltU6WhxOCD6iw_zDDbzKUnTGpwkLg-AqLvvvODB5UeXsiv2oprOH33yAlET_ZPybbY0HZzMjX9hJGFFcfMpy8eMFieQDz5vccOq6plriB9XAQAGh297IzOadm7ZxW7ifVlwA"
+}
+```
+
+### More Information Request Body
+
+| atribute | value            | keterangan                                                  |
+| -------- | ---------------- | ----------------------------------------------------------- |
+| idToken  | idToken Firebase | idToken firebase ini di dapatkan dari authentication client |
+
+Response Body Success :
+
+```json
+{
+	"status": 200,
+	"message": "daftar berhasil!",
+	"data": {
+		"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxMjY5N2ZiLTM5MmQtNDc3ZC05YmEwLTkxYmJjOWI1NTNlNiIsInJvbGUiOiJtYWhhc2lzd2EiLCJpYXQiOjE3MzYwODAwMDAsImV4cCI6MTczNjE2NjQwMH0.yo-1WbikbyLQvQamIKQj1v-oYUn17JWp4vw6XJcCAm8"
+	},
+	"refrence": null,
+	"error": false
+}
+```
+
+Response Body Error :
+
+```json
+{
+	"status": 500,
+	"message": "Firebase ID token has expired. Get a fresh ID token from your client app and try again (auth/id-token-expired). See https://firebase.google.com/docs/auth/admin/verify-id-tokens for details on how to retrieve an ID token.",
+	"data": null,
+	"refrence": null,
+	"error": true
+}
+```
 
 ## Create User
 
